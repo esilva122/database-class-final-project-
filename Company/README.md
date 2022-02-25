@@ -3,6 +3,9 @@
  # Commands
  You can run the query either
  ## Interactively
+ ```bash
+ psql -h localhost -p 5432 -U mhassanin -d schools
+```
  or 
  ## File
 1. To create the schema
