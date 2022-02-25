@@ -3,7 +3,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 -- C# EF core does not support ENUMS :(
 -- CREATE TYPE person_type AS ENUM ('realUser', 'systemGenerated');
 CREATE TABLE IF NOT EXISTS EMPLOYEE (
-    id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
+    id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY, -- uniquemess not null
     email VARCHAR(128) NOT NULL UNIQUE,
     name VARCHAR(128) NOT NULL,
     phone VARCHAR(128),
@@ -40,4 +40,17 @@ CREATE TABLE IF NOT EXISTS DEPENDENT(
     employee_id uuid NOT NULL,
     -- Constraints
     CONSTRAINT employee_id_fk FOREIGN KEY (employee_id) REFERENCES EMPLOYEE(id) ON DELETE CASCADE
+);
+
+ALTER TABLE EMPLOYEE ADD COLUMN department_id uuid;
+ALTER TABLE EMPLOYEE ADD CONSTRAINT Department_FK FOREIGN KEY (department_id) REFERENCES DEPARTMENT(id) ON DELETE SET NULL;
+
+CREATE TABLE IF NOT EXISTS EMPLOYEE_PROJECTS
+(
+    id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
+    employee_id uuid,
+    project_id uuid,
+    -- Constraints
+    CONSTRAINT employee_id_fk FOREIGN KEY (employee_id) REFERENCES EMPLOYEE(id) ON DELETE CASCADE,
+    CONSTRAINT project_id_fk FOREIGN KEY(project_id) REFERENCES PROJECT(id) ON DELETE CASCADE
 );
